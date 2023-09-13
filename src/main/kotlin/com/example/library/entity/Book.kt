@@ -1,16 +1,24 @@
 package com.example.library.entity
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 
 
 @Entity
 @Table(name = "book")
-class Book
-{
+class Book {
     @Id
     @GeneratedValue
     private val id: Long? = null
+
+    @Column(nullable = false)
+    private val title: String? = null
+
+    @Column(nullable = false)
+    private val year: Int? = null
+
+    @Column(nullable = false)
+    private val publisher: Int? = null
+
+
 }
+
