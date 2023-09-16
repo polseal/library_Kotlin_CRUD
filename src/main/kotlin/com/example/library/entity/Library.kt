@@ -5,8 +5,8 @@ import java.sql.Timestamp
 
 
 @Entity
-@Table(name="library_logs")
-class LibraryLogs
+@Table(name="library")
+class Library
 {
     @Id
     @GeneratedValue
@@ -23,7 +23,7 @@ class LibraryLogs
     @Column(name = "timestamp")
     private val dated: Timestamp? = null
 
-    @Column(name = "taken")
+    @Column(name = "status")
     private val away: Boolean? = null
 
 

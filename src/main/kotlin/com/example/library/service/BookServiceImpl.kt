@@ -4,23 +4,30 @@ import com.example.library.entity.Book
 import com.example.library.repo.BookRepo
 
 class BookServiceImpl : BookService  {
-    override fun isBookInLibrary(bookId: String): Boolean {
-        TODO("Not yet implemented")
+
+    val  bookRepository : BookRepo? = null
+
+    override fun isBookInLibrary(book_id: Long): Boolean {
+        val bookFromLibrary = bookRepository?.findById(book_id)
+            ?: return false
+        return true
     }
 
-    override fun getBookByID(bookId: String): BookRepo {
-        TODO("Not yet implemented")
+    override fun getBookByTitle(title: String): Book? {
+        return bookRepository?.findBookByTitleIgnoreCase(title)
     }
 
-    override fun getBookByName(bookId: String): BookRepo {
-        TODO("Not yet implemented")
+    override fun saveBook(book: Book?): Book? {
+        return book?.let { bookRepository?.save(it) }
     }
 
-    override fun searchBooks(searchText: String?): List<Book?>? {
-        TODO("Not yet implemented")
+    override fun deleteBook(bookId: Long?)
+    {
+        val bookFromLibrary = bookRepository?.findById(bookId)
+            ?: throw IllegalArgumentException("Book with id $bookId not found")
+
+        bookRepository?.delete(bookFromLibrary)
+
     }
 
-    override fun saveBook(bookRepo: BookRepo?, changedByUsername: String?): Book? {
-        TODO("Not yet implemented")
-    }
 }
