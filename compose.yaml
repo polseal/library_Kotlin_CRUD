@@ -9,3 +9,40 @@ services:
       - '5432:5432'
     volumes:
       - ./data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+
+  liquibase:
+    image: liquibase/liquibase
+    container_name: liquibase
+    volumes:
+      - ./liquibase:/liquibase/changelog
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - 'LIQUIBASE_COMMAND_REFERENCE_URL=jdbc:postgresql:/localhost:5432/db'
+      - 'LIQUIBASE_COMMAND_REFERENCE_USERNAME=guest'
+      - 'LIQUIBASE_COMMAND_PASSWORD=guest'
+      - 'LIQUIBASE_COMMAND_INIT_PROJECT_CHANGELOG_FILE=db.changelog-master.yaml'
+
+  library_app:
+    container_name: library
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DB_URL: "jdbc:postgresql://localhost:5432/db"
+        PG_USER: guest
+        PG_PASSWORD: guest
+    ports:
+      - '8080:8080'
+    environment:
+      DB_URL: "jdbc:postgresql://localhost:5432/db"
+      PG_USER: guest
+      PG_PASSWORD: guest
+    depends_on:
+      - db

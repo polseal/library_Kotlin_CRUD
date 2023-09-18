@@ -18,7 +18,7 @@ class BookController
         return "Starting page"
     }
 
-    @PostMapping("/")
+    @PostMapping("/new")
     fun save(@RequestBody book: Book?): ResponseEntity<*>? {
         return if (book == null) ResponseEntity.badRequest()
             .body<String>("The provided book is not valid") else ResponseEntity.status(HttpStatus.CREATED)

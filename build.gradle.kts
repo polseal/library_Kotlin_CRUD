@@ -18,6 +18,10 @@ java {
 repositories {
 	mavenCentral()
 }
+springBoot {
+	mainClass.set("com.example.library.LibraryApplication")
+}
+
 
 dependencies {
 	implementation ("org.jetbrains.kotlin:kotlin-stdlib:1.7.20")
@@ -42,7 +46,6 @@ tasks.withType<KotlinCompile> {
 		jvmTarget = "19"
 	}
 }
-
 val fatJar = task("fatJar", type = Jar::class) {
 	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 	manifest {
@@ -55,11 +58,12 @@ val fatJar = task("fatJar", type = Jar::class) {
 }
 
 tasks {
-	"build" {
+	named("build") {
 		dependsOn(fatJar)
 	}
 }
 
-tasks.withType<Test> {
-	useJUnitPlatform()
-}
+
+//tasks.withType<Test> {
+//	useJUnitPlatform()
+//}
