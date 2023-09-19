@@ -12,28 +12,28 @@ group = "com.example"
 version = "0.0.1-SNAPSHOT"
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_19
+	sourceCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
 	mavenCentral()
 }
 springBoot {
-	mainClass.set("com.example.library.LibraryApplication")
+	mainClass.set("com.example.library.LibraryApplicationKt")
 }
 
 
 dependencies {
 	implementation ("org.jetbrains.kotlin:kotlin-stdlib:1.7.20")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-security")
-	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+//	implementation("org.springframework.boot:spring-boot-starter-security")
+//	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.liquibase:liquibase-core")
-	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
-	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+//	implementation("org.liquibase:liquibase-core")
+//	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
+//	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 	runtimeOnly("org.postgresql:postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
@@ -43,27 +43,11 @@ dependencies {
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs += "-Xjsr305=strict"
-		jvmTarget = "19"
-	}
-}
-val fatJar = task("fatJar", type = Jar::class) {
-	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-	manifest {
-		attributes["Implementation-Title"] = "Gradle Jar File Example"
-		attributes["Implementation-Version"] = version
-		attributes["Main-Class"] = "com.example.library.LibraryApplication"
-	}
-	from(configurations.runtimeClasspath.get().map({ if (it.isDirectory) it else zipTree(it) }))
-	with(tasks.jar.get() as CopySpec)
-}
-
-tasks {
-	named("build") {
-		dependsOn(fatJar)
+		jvmTarget = "17"
 	}
 }
 
 
-//tasks.withType<Test> {
-//	useJUnitPlatform()
-//}
+tasks.withType<Test> {
+	useJUnitPlatform()
+}
